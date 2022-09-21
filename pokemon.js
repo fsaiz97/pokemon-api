@@ -66,6 +66,15 @@ nextButton.addEventListener('click', () => {
     fetchPokemon(index);
 })
 
+const previousButton = document.querySelector('#previousPokemon');
+previousButton.addEventListener('click', () => {
+    index--;
+    if(index <= 0) {
+        index += 905; // magic number
+    }
+    fetchPokemon(index);
+})
+
 const searchForm = document.querySelector('#searchForm');
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
