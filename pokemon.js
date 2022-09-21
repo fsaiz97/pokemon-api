@@ -62,6 +62,12 @@ nextButton.addEventListener('click', () => {
     fetchPokemon(index);
 })
 
+const previousButton = document.querySelector('#previousPokemon');
+previousButton.addEventListener('click', () => {
+    index--;
+    fetchPokemon(index);
+})
+
 const searchForm = document.querySelector('#searchForm');
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
