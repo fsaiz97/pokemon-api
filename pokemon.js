@@ -1,3 +1,5 @@
+let index;
+
 function capitalize(str) {
     return str[0].toUpperCase() + str.slice(1);
 }
@@ -47,12 +49,14 @@ const fetchPokemon = async (searchTerm) => {
 
         // Pokemon moves
         getPokemonMoves(pokemonData);
+
+        index = pokemonData.id;
     } catch (err) {
         console.log(err)
     }
 }
 
-let index = 1;
+index = 1;
 
 fetchPokemon(index);
 
