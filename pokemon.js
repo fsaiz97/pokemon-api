@@ -2,9 +2,9 @@ function capitalize(str) {
     return str[0].toUpperCase() + str.slice(1);
 }
 
-const fetchPokemon = async (pokemonIndex) => {
+const fetchPokemon = async (searchTerm) => {
     try {
-        let pokemonURL = `https://pokeapi.co/api/v2/pokemon/${pokemonIndex}`
+        let pokemonURL = `https://pokeapi.co/api/v2/pokemon/${searchTerm}`;
         const response = await fetch(pokemonURL);
         const pokemonData = await response.json();
     
@@ -24,9 +24,17 @@ const fetchPokemon = async (pokemonIndex) => {
         // clear current moves
         movesList.innerHTML = "";
         for(let i = 0; i < 5; i++) {
-            let moveItem = document.createElement('li');
-            moveItem.textContent = pokemonData.moves[i].move.name;
-            movesList.append(moveItem);
+            try {
+                let moveItem = document.createElement('li');
+                moveItem.textContent = pokemonData.moves[i].move.name;
+                movesList.append(moveItem);
+            } catch (err) {
+                if (err.name === "TypeError") {
+                    break;
+                } else {
+                    console.log(err)
+                }
+            }
         }
     } catch (err) {
         console.log(err)
@@ -41,4 +49,12 @@ const nextButton = document.querySelector('#nextPokemon');
 nextButton.addEventListener('click', () => {
     index++;
     fetchPokemon(index);
+})
+
+const searchForm = document.querySelector('#searchForm');
+searchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let userSearch = e.target.pokemonSearch.value;
+    userSearch = userSearch.toLowerCase();
+    fetchPokemon(userSearch);
 })
