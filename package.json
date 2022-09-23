@@ -4,9 +4,12 @@
   "description": "",
   "main": "pokemon.js",
   "scripts": {
+    "build": "./build"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "build": "^0.1.4"
+  },
   "type": "module"
 }
