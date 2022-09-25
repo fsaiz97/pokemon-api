@@ -4,6 +4,15 @@ function capitalize(str) {
     return str[0].toUpperCase() + str.slice(1);
 }
 
+function getNumberOfEntries() {
+    let result;
+    fetch("https://pokeapi.co/api/v2/pokemon-species")
+    .then(response => response.json())
+    .then(json => (result = json.count))
+    console.log("result =", result);
+    return result;
+}
+
 function getPokemonName(data) {
     let pokemonName = document.querySelector("#pokemonName");
     pokemonName.textContent = capitalize(data.name);
@@ -39,6 +48,7 @@ const fetchPokemon = async (searchTerm) => {
         let pokemonURL = `https://pokeapi.co/api/v2/pokemon-species/${searchTerm}`;
         const response = await fetch(pokemonURL);
         const pokemonData = await response.json();
+        console.log(pokemonData)
 
         let pokemonDefaultEntry;
         for (variety in pokemonData.varieties) {
@@ -67,20 +77,22 @@ const fetchPokemon = async (searchTerm) => {
 
 index = 1;
 
+let numOfEntries = getNumberOfEntries();
+console.log("entries:", numOfEntries)
+
 fetchPokemon(index);
 
 const nextButton = document.querySelector('#nextPokemon');
 nextButton.addEventListener('click', () => {
     index++;
+    if (index > numOfEntries) index -= numOfEntries;
     fetchPokemon(index);
 })
 
 const previousButton = document.querySelector('#previousPokemon');
 previousButton.addEventListener('click', () => {
     index--;
-    if(index <= 0) {
-        index += 905; // magic number
-    }
+    if (index <= 0) index += numOfEntries;
     fetchPokemon(index);
 })
 
