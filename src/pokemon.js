@@ -36,19 +36,28 @@ function getPokemonMoves(data) {
 
 const fetchPokemon = async (searchTerm) => {
     try {
-        let pokemonURL = `https://pokeapi.co/api/v2/pokemon/${searchTerm}`;
+        let pokemonURL = `https://pokeapi.co/api/v2/pokemon-species/${searchTerm}`;
         const response = await fetch(pokemonURL);
         const pokemonData = await response.json();
+
+        let pokemonDefaultEntry;
+        for (variety in pokemonData.varieties) {
+            if (pokemonData.varieties[variety].is_default) {
+                let defaultPokemonRaw = await fetch(pokemonData.varieties[variety].pokemon.url);
+                pokemonDefaultEntry = await defaultPokemonRaw.json();
+                break;
+            }
+        }
 
         // Pokemon name
         getPokemonName(pokemonData);
     
         // Pokemon sprites
-        getPokemonImage ("front", pokemonData);
-        getPokemonImage ("back", pokemonData);
+        getPokemonImage("front", pokemonDefaultEntry);
+        getPokemonImage("back", pokemonDefaultEntry);
 
         // Pokemon moves
-        getPokemonMoves(pokemonData);
+        getPokemonMoves(pokemonDefaultEntry);
 
         index = pokemonData.id;
     } catch (err) {
